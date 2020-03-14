@@ -31,10 +31,9 @@
 									<td>{{ $comment->content }}</td>
 									<td>{{ $comment->created_at->diffForHumans() }}</td>
 									<td>
-										<form id="delete_comment_{{ $comment->id }}" action="{{ route('commentDelete', $comment->id) }}" method="post">
-											@csrf		
-										</form>
-										<button type="button" class="btn btn-danger" onclick="document.getElementById('delete_comment_{{ $comment->id }}').submit()">X</button>
+										
+										<!-- Delete Button trigger modal -->
+										<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete_comment_modal_{{ $comment->id }}">X</button>
 									</td>
 								</tr>
 								@endforeach
@@ -46,4 +45,32 @@
 		</div>
 	</div>
 </div>
+
+@foreach (Auth::user()->comments as $comment)
+<!-- Modal -->
+<div class="modal fade" id="delete_comment_modal_{{ $comment->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">You are about to delete comment for post - {{ $comment->post->title }}</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				Are you sure?
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">No, keep it.</button>
+				<form id="" action="{{ route('commentDelete', $comment->id) }}" method="post"">
+					@csrf
+					
+					<button type="submit" class="btn btn-danger">Yes, delete it</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+@endforeach
+
 @endsection

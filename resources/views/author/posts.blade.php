@@ -40,10 +40,9 @@
 									<td>
 										<div class="text-nowrap">
 											<a href="{{ route('postEdit', $post->id) }}" class="btn btn-info">Edit</a>
-											<form id="delete_post_{{ $post->id }}" action="{{ route('postDelete', $post->id) }}" method="post" style="display: none;">
-												@csrf		
-											</form>
-											<button type="button" class="btn btn-danger" onclick="document.getElementById('delete_post_{{ $post->id }}').submit()">X</button>
+
+											<!-- Delete Button trigger modal -->
+											<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete_post_modal_{{ $post->id }}">X</button>
 										</div>
 									</td>
 								</tr>
@@ -56,4 +55,32 @@
 		</div>
 	</div>
 </div>
+
+@foreach (Auth::user()->posts as $post)
+<!-- Modal -->
+<div class="modal fade" id="delete_post_modal_{{ $post->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">You are about to delete - {{ $post->title }}</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				Are you sure?
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">No, keep it.</button>
+				<form id="" action="{{ route('postDelete', $post->id) }}" method="post"">
+					@csrf
+					
+				<button type="submit" class="btn btn-danger">Yes, delete it</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+@endforeach
+
 @endsection
