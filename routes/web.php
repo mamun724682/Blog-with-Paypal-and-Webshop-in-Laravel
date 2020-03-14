@@ -25,6 +25,7 @@ Route::group(['prefix' => 'user'], function() {
     Route::get('/dashboard', 'UserController@dashboard')->name('userDashboard');
 
     Route::get('/comments', 'UserController@comments')->name('userComments');
+    	Route::post('/new-comment', 'UserController@newComment')->name('newComment');
     	Route::post('/comment/{id}/delete', 'UserController@commentDelete')->name('commentDelete');
 
     Route::get('/profile', 'UserController@profile')->name('userProfile');

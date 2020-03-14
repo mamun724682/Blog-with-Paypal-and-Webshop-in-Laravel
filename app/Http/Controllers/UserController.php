@@ -50,6 +50,18 @@ class UserController extends Controller
     	return view('user.comments');
     }
 
+    public function newComment(Request $request)
+    {
+        $comment = new Comment;
+
+        $comment->user_id = Auth::id();
+        $comment->post_id = $request->post_id;
+        $comment->content = $request->content;
+        $comment->save();
+        
+        return back();
+    }
+
     public function commentDelete($id)
     {
     	Comment::where('id', $id)->where('user_id', Auth::id())->delete();
