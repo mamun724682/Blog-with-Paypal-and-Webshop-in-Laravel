@@ -63,3 +63,8 @@ Route::group(['prefix' => 'admin'], function() {
     	Route::post('/user/{id}/edit', 'AdminController@updateUser')->name('adminUpdateUser');
     	Route::post('/user/{id}/delete', 'AdminController@userDelete')->name('adminUserDelete');
 });
+
+// Webshop
+Route::group(['prefix' => 'shop'], function() {
+    Route::get('/', 'ShopController@index')->name('shop.index');
+});

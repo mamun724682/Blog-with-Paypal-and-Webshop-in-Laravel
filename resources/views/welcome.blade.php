@@ -9,7 +9,7 @@
       <div class="col-lg-8 col-md-10 mx-auto">
         <div class="site-heading">
           <h1><img src="{{ asset('assets/img/devFaculty.png') }}"></h1>
-          <span class="subheading">A Dynamic Project with Laravel</span>
+          <span class="subheading">{{ remove_spaces('A Dynamic Project with Laravel') }}</span>
         </div>
       </div>
     </div>
