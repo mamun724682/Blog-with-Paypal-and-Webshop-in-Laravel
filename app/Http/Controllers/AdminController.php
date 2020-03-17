@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Post;
 use App\User;
 use App\Comment;
+use App\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Charts\DashboardChart;
@@ -15,7 +16,7 @@ class AdminController extends Controller
 	{
 		$this->middleware('checkRole:admin');
         $this->middleware('auth');
-	}
+    }
 
     public function dashboard()
     {
@@ -28,7 +29,7 @@ class AdminController extends Controller
         $chart->dataset('Posts', 'line', $posts);
         $chart->labels($days);
 
-    	return view('admin.dashboard', compact('chart'));
+        return view('admin.dashboard', compact('chart'));
     }
 
     private function generateDateRange(Carbon $start_date, Carbon $end_date)
@@ -45,7 +46,7 @@ class AdminController extends Controller
     public function posts()
     {
         $posts = Post::all();
-    	return view('admin.posts', compact('posts'));
+        return view('admin.posts', compact('posts'));
     }
 
     public function postEdit($id)
@@ -74,7 +75,7 @@ class AdminController extends Controller
     public function comments()
     {
         $comments = Comment::all();
-    	return view('admin.comments', compact('comments'));
+        return view('admin.comments', compact('comments'));
     }
 
     public function commentDelete($id)
@@ -86,7 +87,7 @@ class AdminController extends Controller
     public function users()
     {
         $users = User::all();
-    	return view('admin.users', compact('users'));
+        return view('admin.users', compact('users'));
     }
 
     public function userEdit($id)
@@ -119,5 +120,75 @@ class AdminController extends Controller
     {
         User::where('id', $id)->delete();
         return back();
+    }
+
+    // Shop Management
+    public function products()
+    {
+        $products = Product::all();
+        return view('admin.products', compact('products'));
+    }
+
+    public function newProduct()
+    {
+        return view('admin.newProduct');
+    }
+
+    public function newProductPost(Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'required|string',
+            'thumbnail' => 'required|file',
+            'description' => 'required',
+            'price' => 'required|regex:/^[0-9]+(\.[0-9]?)?$/'
+        ]);
+
+        $product = new Product;
+        $product->title = $request->title;
+        $product->description = $request->description;
+        $product->price = $request->price;
+
+        $thumbnail = $request->file('thumbnail');
+        $fileName = $thumbnail->getClientOriginalName();
+        $thumbnail->move('product-images', $fileName);
+        $product->thumbnail = 'product-images/' . $fileName;
+
+        $product->save();
+
+        return back()->with('success', 'Product added successfully!');
+    }
+
+    public function editProduct($id)
+    {
+        $product = Product::findOrFail($id);
+
+        return view('admin.editProduct', compact('product'));
+    }
+
+    public function editProductPost(Request $request, $id)
+    {
+        $this->validate($request, [
+            'title' => 'required|string',
+            'thumbnail' => 'file',
+            'description' => 'required',
+            'price' => 'required|regex:/^[0-9]+(\.[0-9]?)?$/'
+        ]);
+
+        $product = Product::findOrFail($id);
+
+        $product->title = $request->title;
+        $product->description = $request->description;
+        $product->price = $request->price;
+
+        if ($request->hasFile('thumbnail')) {
+            $thumbnail = $request->file('thumbnail');
+            $fileName = $thumbnail->getClientOriginalName();
+            $thumbnail->move('product-images', $fileName);
+            $product->thumbnail = 'product-images/' . $fileName;
+        }
+
+        $product->save();
+
+        return back()->with('success', 'Product updated successfully!');
     }
 }

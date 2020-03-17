@@ -62,6 +62,13 @@ Route::group(['prefix' => 'admin'], function() {
     Route::get('/user/{id}/edit', 'AdminController@userEdit')->name('adminUserEdit');
     	Route::post('/user/{id}/edit', 'AdminController@updateUser')->name('adminUpdateUser');
     	Route::post('/user/{id}/delete', 'AdminController@userDelete')->name('adminUserDelete');
+
+    // Shop Management
+    Route::get('products', 'AdminController@products')->name('adminProducts');
+    Route::get('product/new', 'AdminController@newProduct')->name('adminNewProduct');
+    	Route::post('product/new', 'AdminController@newProductPost')->name('adminNewProductPost');
+    Route::get('product/{id}', 'AdminController@editProduct')->name('adminEditProduct');
+    	Route::post('product/{id}', 'AdminController@editProductPost')->name('adminEditProductPost');
 });
 
 // Webshop
