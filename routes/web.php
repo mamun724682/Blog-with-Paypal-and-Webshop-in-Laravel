@@ -69,9 +69,12 @@ Route::group(['prefix' => 'admin'], function() {
     	Route::post('product/new', 'AdminController@newProductPost')->name('adminNewProductPost');
     Route::get('product/{id}', 'AdminController@editProduct')->name('adminEditProduct');
     	Route::post('product/{id}', 'AdminController@editProductPost')->name('adminEditProductPost');
+    	Route::post('product/{id}/delete', 'AdminController@deleteProduct')->name('adminDeleteProduct');
 });
 
 // Webshop
 Route::group(['prefix' => 'shop'], function() {
     Route::get('/', 'ShopController@index')->name('shop.index');
+    Route::get('product/{id}', 'ShopController@singleProduct')->name('shop.singleProduct');
+    Route::get('product/{id}/order', 'ShopController@orderProduct')->name('shop.orderProduct');
 });

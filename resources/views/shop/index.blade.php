@@ -17,5 +17,34 @@
 </header>
 
 <!-- Main Content -->
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+      @foreach ($products as $product)
+      <div class="post-preview">
+        <div class="row">
+          <div class="col-md-3">
+            <img src="{{ asset($product->thumbnail) }}" width="100">
+          </div>
+          <div class="col-md-9">
+            <a href="{{ route('shop.singleProduct', $product->id) }}" style="text-decoration: none;">
+          <h2 class="post-title">
+            {{ $product->title }}
+          </h2>
+        </a>
+        <p class="post-meta">${{ $product->price }} USD
+      </p>
+          </div>
+        </div>
+      </div>
+      <hr>
+      @endforeach
+      <!-- Pager -->
+      <div class="clearfix float-right">        
+        {{ $products->links() }}
+      </div>
+    </div>
+  </div>
+</div>
 
 @endsection

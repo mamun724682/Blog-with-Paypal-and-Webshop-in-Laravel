@@ -78,7 +78,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">No, keep it.</button>
-				<form id="" action="" method="post"">
+				<form id="" action="{{ route('adminDeleteProduct', $product->id) }}" method="post"">
 					@csrf
 					
 					<button type="submit" class="btn btn-danger">Yes, delete it</button>

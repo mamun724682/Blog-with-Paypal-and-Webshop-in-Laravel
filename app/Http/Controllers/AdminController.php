@@ -191,4 +191,11 @@ class AdminController extends Controller
 
         return back()->with('success', 'Product updated successfully!');
     }
+
+    public function deleteProduct($id)
+    {
+        Product::findOrFail($id)->delete();
+
+        return back();
+    }
 }

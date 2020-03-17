@@ -2,28 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Product;
 use Illuminate\Http\Request;
 
 class ShopController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        return view('shop.index');
+        $products = Product::paginate(5);
+        return view('shop.index', compact('products'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function singleProduct($id)
     {
-        //
+        $product = Product::findOrFail($id);
+
+        return view('shop.singleProduct', compact('product'));
     }
 
     /**
